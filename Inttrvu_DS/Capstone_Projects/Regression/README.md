@@ -10,6 +10,8 @@ medical, lifestyle, and coverage information.
 The solution uses Ridge Regression and provides real-time
 predictions through a Flask REST API.
 
+**Live Link** : https://insurance-premium-prediction-ebsmfumghgivxfyz6j9udu.streamlit.app/?utm_source=chatgpt.com
+
 ## Dataset
 
 - Total records: 1,000,000
@@ -25,45 +27,63 @@ predictions through a Flask REST API.
 | Evaluation | 200,000 | Final model testing |
 | Live | 100,000 | Production prediction simulation |
 
-## Feature Engineering
+## Methodology
 
-The preprocessing pipeline includes:
+1. **Data Cleaning** :
+    - Processed 1 million insurance records
+    - Validated numerical ranges
+    - Checked for duplicates
+    - Identified missing values across demographic, medical, and lifestyle features
 
-- Median imputation for numerical features
-- Unknown-category imputation for missing categorical values
-- StandardScaler for numerical standardization
-- One-Hot Encoding for categorical variables
-- Consistent preprocessing during training and prediction
+2. **Exploratory Data Analysis (EDA)** : 
+    - Analyzed insurance charge distributions
+    - Identified outliers
+    - Investigated relationships between charges and key factors such as smoking status, age, BMI, medical history, and coverage level
 
-## Models Evaluated
+3. **Feature Engineering** : 
+   - Median imputation for numerical features
+   - Unknown-category imputation for missing categorical values
+   - StandardScaler for numerical standardization
+   - One-Hot Encoding for categorical variables
+   - Consistent preprocessing during training and prediction
 
-- Linear Regression
-- Ridge Regression
-- Decision Tree Regression
-- Random Forest Regression
-- Histogram-based Gradient Boosting Regression
+4. **Model Development & Evaluation** :  
+    - Models Evaluated
+      - Linear Regression
+      - Ridge Regression
+      - Decision Tree Regression
+      - Random Forest Regression
+      - Histogram-based Gradient Boosting Regression
+    - Compared performance using MAE, RMSE, and R²
+      
+5. **Optimization & Deployment** – Selected **Ridge Regression (α = 1.0)**, achieving **R² = 0.9941, MAE = 275.68, and RMSE = 340.47**. Saved the preprocessing and prediction pipeline as a lightweight **0.01 MB Joblib model** and developed Flask REST API and Streamlit interfaces for real-time predictions.
 
-### Selected Model: Ridge Regression
+    - Selected Model: Ridge Regression
+      - Hyperparameter: alpha = 1.0
+    - Final Evaluation Results
+      
+        | Metric | Result |
+        |---|---:|
+        | MAE | 275.6770 |
+        | RMSE | 340.4687 |
+        | R² | 0.9941 |
 
-Hyperparameter: alpha = 1.0
+## Key Findings
 
-### Final Evaluation Results
+1. **Smoking Impact:** Smokers incur approximately 35% higher average insurance charges than non-smokers.
 
-| Metric | Result |
-|---|---:|
-| MAE | 275.6770 |
-| RMSE | 340.4687 |
-| R² | 0.9941 |
+2. **Outlier Concentration:** All 2,190 upper-charge outliers are associated with smokers.
 
-The selected model achieved an R² score of 99.41%
-on the reserved evaluation dataset.
+3. **Balanced Dataset:** Gender and regional distributions are nearly uniform, providing balanced representation across these categories.
+
+4. **Data Quality:** Missing values of 2.4%–4% in selected features were addressed through numerical and categorical imputation.
 
 ## Project Structure
 
     Regression/
     ├── train.py
     ├── predict.py
-    ├── app.py
+    ├── streamlit_app.py
     ├── requirements.txt
     ├── .gitignore
     ├── README.md
@@ -71,93 +91,3 @@ on the reserved evaluation dataset.
     └── models/
         └── insurance_pipeline.joblib
 
-Note: regression.db is excluded from Git.
-Obtain the original database separately to retrain the model.
-
-## Installation
-
-Install the dependencies:
-
-    pip install -r requirements.txt
-
-The saved model must be available at:
-
-    models/insurance_pipeline.joblib
-
-## Model Training
-
-To retrain from the SQLite database:
-
-    python train.py
-
-## Run the Flask API
-
-Start the Flask development server:
-
-    python app.py
-
-The API will be accessible at:
-
-    http://127.0.0.1:5000
-
-## API Endpoints
-
-### GET /health
-
-Checks whether the API is running.
-
-### POST /predict
-
-Accepts customer details and returns predicted insurance charges.
-
-Example request:
-
-    {
-      "age": 35,
-      "gender": "female",
-      "bmi": 27.5,
-      "children": 2,
-      "smoker": "no",
-      "region": "southeast",
-      "medical_history": "Diabetes",
-      "family_medical_history": "Heart disease",
-      "exercise_frequency": "Frequently",
-      "occupation": "White collar",
-      "coverage_level": "Premium"
-    }
-
-Example response:
-
-    {
-      "status": "success",
-      "predicted_charges": 20977.35
-    }
-
-## API Validation
-
-The Flask API supports:
-
-- Required-field validation
-- Numerical input range validation
-- Multiple validation errors in one response
-- Case-insensitive categorical input
-- Leading and trailing whitespace handling
-- HTTP 400 responses for invalid requests
-
-## Production Prediction Simulation
-
-The trained model successfully processed 100,000
-reserved live records.
-
-- Missing predictions: 0
-- Negative predictions: 0
-- Infinite predictions: 0
-
-## Important Notes
-
-The target variable is named charges. Predictions should
-not be treated as binding insurance quotations.
-
-The Flask development server is intended for local testing.
-Production deployment requires a production-grade server,
-security controls, and appropriate model governance.
