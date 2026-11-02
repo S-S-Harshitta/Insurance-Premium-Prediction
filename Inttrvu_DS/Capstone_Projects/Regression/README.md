@@ -8,9 +8,11 @@ to predict insurance charges based on customer demographic,
 medical, lifestyle, and coverage information.
 
 The solution uses Ridge Regression and provides real-time
-predictions through a Flask REST API.
+prediction API and a web interface for real-time inference.
 
-**Live Link** : https://insurance-premium-prediction-ebsmfumghgivxfyz6j9udu.streamlit.app/?utm_source=chatgpt.com
+The app is deployed here:
+
+**Live Demo** : https://insurance-premium-prediction-ebsmfumghgivxfyz6j9udu.streamlit.app/?utm_source=chatgpt.com
 
 ## Dataset
 
@@ -56,8 +58,7 @@ predictions through a Flask REST API.
       - Histogram-based Gradient Boosting Regression
     - Compared performance using MAE, RMSE, and R²
       
-5. **Optimization & Deployment** – Selected **Ridge Regression (α = 1.0)**, achieving **R² = 0.9941, MAE = 275.68, and RMSE = 340.47**. Saved the preprocessing and prediction pipeline as a lightweight **0.01 MB Joblib model** and developed Flask REST API and Streamlit interfaces for real-time predictions.
-
+5. **Optimization & Deployment** – 
     - Selected Model: Ridge Regression
       - Hyperparameter: alpha = 1.0
     - Final Evaluation Results
@@ -91,3 +92,7 @@ predictions through a Flask REST API.
     └── models/
         └── insurance_pipeline.joblib
 
+## Tech Stack
+- Jupyter Notebook, Python, pandas, NumPy, scikit-learn, joblib (ML Model Development)
+- Streamlit (App Deployment)
+- SQLite (Data Source)
